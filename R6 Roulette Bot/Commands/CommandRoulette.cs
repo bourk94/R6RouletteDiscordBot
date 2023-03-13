@@ -14,6 +14,12 @@ namespace R6_Roulette_Bot.Commands
         // Attributs
         private static int rerollAtk;
         private static int rerollDef;
+        private string attackList = "AttackList";
+        private string defenceList = "DefenceList";
+        private string penalityList = "PenalityList";
+        private BdDefi dbAttack = Program.Attack;
+        private BdDefi dbDefence = Program.Defence;
+        private BdDefi dbPenality = Program.Penality;
 
         // Méthodes privées
 
@@ -26,11 +32,11 @@ namespace R6_Roulette_Bot.Commands
             {
                 if (_nomPhase == "Attaque")
                 {
-                    listNumber = randomNumber.Next(0, Program.Attack.size());
+                    listNumber = randomNumber.Next(0, dbAttack.size());
                 }
                 else
                 {
-                    listNumber = randomNumber.Next(0, Program.Defence.size());
+                    listNumber = randomNumber.Next(0, dbDefence.size());
                 }
             } while (listNumber == _reroll);
 
@@ -51,7 +57,7 @@ namespace R6_Roulette_Bot.Commands
             Random randomNumber = new Random();
             int listNumber;
 
-            listNumber = randomNumber.Next(0, Program.Penality.size());
+            listNumber = randomNumber.Next(0, dbPenality.size());
 
             return listNumber;
         }
@@ -155,84 +161,84 @@ namespace R6_Roulette_Bot.Commands
         [Description("Permet de lancer la roulette d'attaque et de défense simultanément")]
         public async Task RouletteStrat(CommandContext ctx)
         {
-            await ctx.Channel.SendMessageAsync("**```diff\n-Défis attaque : \n" + Program.Attack.lire(RollChallenge("Attaque", rerollAtk)).ToString() + "\n```" + "```ini\n[Défis défense : ]\n" + Program.Defence.lire(RollChallenge("Defense", rerollDef)).ToString() + "\n```" + "```css\n[Conséquence : ]\n" + Program.Penality.lire(RollPenality()).ToString() + "\n```**").ConfigureAwait(false);
+            await ctx.Channel.SendMessageAsync("**```diff\n-Défis attaque : \n" + dbAttack.lire(RollChallenge("Attaque", rerollAtk)).ToString() + "\n```" + "```ini\n[Défis défense : ]\n" + dbDefence.lire(RollChallenge("Defense", rerollDef)).ToString() + "\n```" + "```css\n[Conséquence : ]\n" + dbPenality.lire(RollPenality()).ToString() + "\n```**").ConfigureAwait(false);
         }
 
         [Command("attaque"), Aliases("att", "attack", "atk")]
         [Description("Permet de lancer la roulette d'attaque")]
         public async Task RouletteAttack(CommandContext ctx)
         {
-            await ctx.Channel.SendMessageAsync("**```diff\n-Défis attaque : \n" + Program.Attack.lire(RollChallenge("Attaque", rerollAtk)).ToString() + "\n```" + "```css\n[Conséquence : ]\n" + Program.Penality.lire(RollPenality()).ToString() + "\n```**").ConfigureAwait(false);
+            await ctx.Channel.SendMessageAsync("**```diff\n-Défis attaque : \n" + dbAttack.lire(RollChallenge("Attaque", rerollAtk)).ToString() + "\n```" + "```css\n[Conséquence : ]\n" + dbPenality.lire(RollPenality()).ToString() + "\n```**").ConfigureAwait(false);
         }
 
         [Command("defense"), Aliases("def", "defence")]
         [Description("Permet de lancer la roulette de défense")]
         public async Task RouletteDefence(CommandContext ctx)
         {
-            await ctx.Channel.SendMessageAsync("**```ini\n[Défis défense : ]\n" + Program.Defence.lire(RollChallenge("Defense", rerollDef)).ToString() + "\n```" + "```css\n[Conséquence : ]\n" + Program.Penality.lire(RollPenality()).ToString() + "\n```**").ConfigureAwait(false);
+            await ctx.Channel.SendMessageAsync("**```ini\n[Défis défense : ]\n" + dbDefence.lire(RollChallenge("Defense", rerollDef)).ToString() + "\n```" + "```css\n[Conséquence : ]\n" + dbPenality.lire(RollPenality()).ToString() + "\n```**").ConfigureAwait(false);
         }
 
         [Command("ajouterAttaque"), Aliases("addAttaque", "addAttack", "ajouterAttack", "addAtk", "ajouterAtk", "ajAttaque", "ajAttack", "ajAtk", "addAtt", "ajAtt", "ajouterAtt")]
         [Description("Permet d'ajouter un défis d'attaque")]
         public async Task AjouterUneAttack(CommandContext ctx, string _nom)
         {
-            await ctx.Channel.SendMessageAsync(Ajouter(Program.Attack, _nom, "AttackList")).ConfigureAwait(false);
+            await ctx.Channel.SendMessageAsync(Ajouter(dbAttack, _nom, attackList)).ConfigureAwait(false);
         }
 
         [Command("ajouterDefense"), Aliases("ajouterDefence", "ajouterDef", "ajDef", "ajDefence", "ajDefense", "addDef", "addDefence", "addDefense")]
         [Description("Permet d'ajouter un défis de défense")]
         public async Task AjouterUneDefence(CommandContext ctx, string _nom)
         {
-            await ctx.Channel.SendMessageAsync(Ajouter(Program.Defence, _nom, "DefenceList")).ConfigureAwait(false);
+            await ctx.Channel.SendMessageAsync(Ajouter(dbDefence, _nom, defenceList)).ConfigureAwait(false);
         }
 
         [Command("ajouterConséquence"), Aliases("ajouterPenality", "addPenality", "addConsequence", "addConséquence", "addCon", "addPen", "ajouterPen", "ajouterCon", "ajouterConsequence", "ajCon", "ajPen", "ajConsequence", "ajConséquence")]
         [Description("Permet d'ajouter une conséquence")]
         public async Task AjouterUnePenality(CommandContext ctx, string _nom)
         {
-            await ctx.Channel.SendMessageAsync(Ajouter(Program.Penality, _nom, "PenalityList")).ConfigureAwait(false);
+            await ctx.Channel.SendMessageAsync(Ajouter(dbPenality, _nom, penalityList)).ConfigureAwait(false);
         }
 
         [Command("supprimerAttaque"), Aliases("supprimerAtt", "supprimerAtk", "supprimerAttack", "supAtk", "supAtt", "supAttack", "supAttaque", "delAtt", "delAtk", "delAttack", "delAttaque")]
         [Description("Permet de supprimer un défis d'attaque")]
         public async Task SupprimerUneAttack(CommandContext ctx, string _nom)
         {
-            await ctx.Channel.SendMessageAsync(Supprimer(Program.Attack, _nom, "AttackList")).ConfigureAwait(false);
+            await ctx.Channel.SendMessageAsync(Supprimer(dbAttack, _nom, attackList)).ConfigureAwait(false);
         }
 
         [Command("supprimerDefense"), Aliases("supprimerDefence", "supprimerDef", "delDef", "delDefence", "delDefense", "supDef", "supDefence", "supDefense")]
         [Description("Permet de supprimer un défis de défense")]
         public async Task SupprimerUneDefence(CommandContext ctx, string _nom)
         {
-            await ctx.Channel.SendMessageAsync(Supprimer(Program.Defence, _nom, "DefenceList")).ConfigureAwait(false);
+            await ctx.Channel.SendMessageAsync(Supprimer(dbDefence, _nom, defenceList)).ConfigureAwait(false);
         }
 
         [Command("supprimerConséquence"), Aliases("supprimerConsequence", "supConsequence", "supCon", "delConsequence", "delCon", "delConséquence", "delPenality", "delPen", "supPenality", "supPen")]
         [Description("Permet de supprimer une conséquence")]
         public async Task SupprimerUnePenality(CommandContext ctx, string _nom)
         {
-            await ctx.Channel.SendMessageAsync(Supprimer(Program.Penality, _nom, "PenalityList")).ConfigureAwait(false);
+            await ctx.Channel.SendMessageAsync(Supprimer(dbPenality, _nom, penalityList)).ConfigureAwait(false);
         }
 
         [Command("listeAttaque"), Aliases("listAttack", "listAttaque", "listAtt", "listeAttack", "listeAtt", "listAtk")]
         [Description("Permet d'afficher la liste des défies d'attaque")]
         public async Task AfficherListAttack(CommandContext ctx)
         {
-            await ctx.Channel.SendMessageAsync(AfficherListe(Program.Attack)).ConfigureAwait(false);
+            await ctx.Channel.SendMessageAsync(AfficherListe(dbAttack)).ConfigureAwait(false);
         }
 
         [Command("listeDefense"), Aliases("listDefence", "listDefense", "listDef", "listeDef", "listeDefence")]
         [Description("Permet de voir la liste des défies de défense")]
         public async Task AfficherListDefence(CommandContext ctx)
         {
-            await ctx.Channel.SendMessageAsync(AfficherListe(Program.Defence)).ConfigureAwait(false);
+            await ctx.Channel.SendMessageAsync(AfficherListe(dbDefence)).ConfigureAwait(false);
         }
 
         [Command("listeConséquence"), Aliases("listPenality", "listConsequence", "listCon", "listeConsequence", "listeCon", "listePenality")]
         [Description("Permet de voir la liste des conséquences")]
         public async Task AfficherListPenality(CommandContext ctx)
         {
-            await ctx.Channel.SendMessageAsync(AfficherListe(Program.Penality)).ConfigureAwait(false);
+            await ctx.Channel.SendMessageAsync(AfficherListe(dbPenality)).ConfigureAwait(false);
         }
 
         [Command("R6?")]

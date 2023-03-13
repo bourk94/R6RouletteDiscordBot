@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="bin\Debug\net6.0\config.json" />
+    <Folder Include="bin\Debug\net6.0\" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties config_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
