@@ -13,6 +13,7 @@ namespace R6_Roulette_Bot
 {
     public class Bot
     {
+        private string projectDirectory = AppDomain.CurrentDomain.BaseDirectory;
         public DiscordClient? Client { get; private set; }
         public CommandsNextExtension? Commands { get; private set; }
         
@@ -21,7 +22,7 @@ namespace R6_Roulette_Bot
             var json = string.Empty;
 
             // Modifier le chemin d'accès au fichier de configuration
-            using (var fs = File.OpenRead("C:/Users/alexa/Desktop/List_R6_Roulette/config.json"))
+            using (var fs = File.OpenRead(Path.Combine(projectDirectory, "List_R6_Roulette", "config.json")))
             using (var sr = new StreamReader(fs, new UTF8Encoding(false)))
                 json = await sr.ReadToEndAsync().ConfigureAwait(false);
 

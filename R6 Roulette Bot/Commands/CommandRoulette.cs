@@ -1,11 +1,6 @@
 ﻿using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.CommandsNext;
 using System.Xml.Serialization;
-using System.Timers;
-using System.Reflection.Emit;
-using System.Threading;
-using System.Collections.Generic;
-using System.Diagnostics.Metrics;
 
 namespace R6_Roulette_Bot.Commands
 {
@@ -137,10 +132,15 @@ namespace R6_Roulette_Bot.Commands
         // Méthode pour sauvegarder les listes des défis et pénalité
         private void SauvegarderListe(string _nomListe, BdDefi _nomBD)
         {
-            var stream = new FileStream("C:/Users/alexa/Desktop/List_R6_Roulette/" + _nomListe + ".xml", FileMode.Create);
-            new XmlSerializer(typeof(BdDefi)).Serialize(stream, _nomBD);
-            stream.Close();
+            string projectDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string xmlFilePath = Path.Combine(projectDirectory, "List_R6_Roulette", _nomListe + ".xml");
+
+            using (var stream = new FileStream(xmlFilePath, FileMode.Create))
+            {
+                new XmlSerializer(typeof(BdDefi)).Serialize(stream, _nomBD);
+            }
         }
+
 
         // Méthode pour afficher les listes
         private string AfficherListe(BdDefi _nomBD)
@@ -153,6 +153,7 @@ namespace R6_Roulette_Bot.Commands
             }
             return message;
         }
+
 
         // Méthodes publiques
         // Méthodes pour lancer les commandes

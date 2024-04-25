@@ -25,23 +25,24 @@ namespace R6_Roulette_Bot
         private static void DeserialixeXmlFileToList()
         {
             var XmlSerializer = new XmlSerializer(typeof(BdDefi));
-            // Modifier le chemin d'accès au fichier de configuration
-            using (var reader = new StreamReader("C:/Users/alexa/Desktop/List_R6_Roulette/AttackList.xml"))
+
+            string projectDirectory = AppDomain.CurrentDomain.BaseDirectory;
+
+            using (var reader = new StreamReader(Path.Combine(projectDirectory, "List_R6_Roulette", "AttackList.xml")))
             {
                 Attack = (BdDefi)XmlSerializer.Deserialize(reader);
             }
 
-            // Modifier le chemin d'accès au fichier de configuration
-            using (var reader = new StreamReader("C:/Users/alexa/Desktop/List_R6_Roulette/DefenceList.xml"))
+            using (var reader = new StreamReader(Path.Combine(projectDirectory, "List_R6_Roulette", "DefenceList.xml")))
             {
                 Defence = (BdDefi)XmlSerializer.Deserialize(reader);
             }
 
-            // Modifier le chemin d'accès au fichier de configuration
-            using (var reader = new StreamReader("C:/Users/alexa/Desktop/List_R6_Roulette/PenalityList.xml"))
+            using (var reader = new StreamReader(Path.Combine(projectDirectory, "List_R6_Roulette", "PenalityList.xml")))
             {
                 Penality = (BdDefi)XmlSerializer.Deserialize(reader);
             }
+
         }
     }
 }
