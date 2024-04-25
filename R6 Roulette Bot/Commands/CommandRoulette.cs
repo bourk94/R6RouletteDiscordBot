@@ -100,7 +100,7 @@ namespace R6_Roulette_Bot.Commands
 
             _nomBD.Add(defie);
             SauvegarderListe(_nomListe, _nomBD);
-            message = "L'élément \"" + _nomDefi + "\"  à été ajouté.";
+            message = "L'élément \"" + _nomDefi + "\" à été ajouté.";
             return message;
         }
 
