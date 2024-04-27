@@ -4,6 +4,9 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
 # Set the working directory
 WORKDIR /app
 
+# Clone the git repository
+RUN git clone https://github.com/bourk94/R6RouletteDiscordBot.git .
+
 # Copy csproj and restore dependencies
 COPY *.csproj ./
 RUN dotnet restore
