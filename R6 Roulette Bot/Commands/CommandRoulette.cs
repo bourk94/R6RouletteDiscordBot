@@ -242,11 +242,11 @@ namespace R6_Roulette_Bot.Commands
             await ctx.Channel.SendMessageAsync(AfficherListe(dbPenality)).ConfigureAwait(false);
         }
 
-        [Command("R6?")]
+        [Command("r6?"), Aliases("r6")]
         [Description("Tag les gars pour jouer a R6")]
         public async Task AppelR6(CommandContext ctx)
         {
-            await ctx.Channel.SendMessageAsync("r6 à soir ? <@277242679933272064> <@291423063701192704> <@372196735411421196> <@334873585040490498>").ConfigureAwait(false);
+            await ctx.Channel.SendMessageAsync("<@&1072650837630931076> REEEEEEEEEEEEEEEEEEEEEEEEEEE").ConfigureAwait(false);
         }
     }
 }
