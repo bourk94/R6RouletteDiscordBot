@@ -246,7 +246,7 @@ namespace R6_Roulette_Bot.Commands
         [Description("Tag les gars pour jouer a R6")]
         public async Task AppelR6(CommandContext ctx)
         {
-            await ctx.Channel.SendMessageAsync("<@&1072650837630931076> test").ConfigureAwait(false);
+            await ctx.Channel.SendMessageAsync("<@&1072650837630931076> REEEEEEEEEEEEEEEEEEEEEEEEEEE").ConfigureAwait(false);
         }
     }
 }
