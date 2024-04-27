@@ -4,9 +4,6 @@
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
 config.json
-AttackList.xml
-DefenceList.xml
-PenalityList.xml
 
 # User-specific files
 *.rsuser

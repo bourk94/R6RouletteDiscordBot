@@ -28,21 +28,44 @@ namespace R6_Roulette_Bot
 
             string projectDirectory = AppDomain.CurrentDomain.BaseDirectory;
 
-            using (var reader = new StreamReader(Path.Combine(projectDirectory, "List_R6_Roulette", "AttackList.xml")))
+            string attackListPath = Path.Combine(projectDirectory, "List_R6_Roulette", "AttackList.xml");
+            if (!File.Exists(attackListPath))
             {
-                Attack = (BdDefi)XmlSerializer.Deserialize(reader);
+                File.Create(attackListPath).Close();
+            }
+            if (new FileInfo(attackListPath).Length > 0)
+            {
+                using (var reader = new StreamReader(attackListPath))
+                {
+                    Attack = (BdDefi)XmlSerializer.Deserialize(reader);
+                }
             }
 
-            using (var reader = new StreamReader(Path.Combine(projectDirectory, "List_R6_Roulette", "DefenceList.xml")))
+            string defenceListPath = Path.Combine(projectDirectory, "List_R6_Roulette", "DefenceList.xml");
+            if (!File.Exists(defenceListPath))
             {
-                Defence = (BdDefi)XmlSerializer.Deserialize(reader);
+                File.Create(defenceListPath).Close();
+            }
+            if (new FileInfo(defenceListPath).Length > 0)
+            {
+                using (var reader = new StreamReader(defenceListPath))
+                {
+                    Defence = (BdDefi)XmlSerializer.Deserialize(reader);
+                }
             }
 
-            using (var reader = new StreamReader(Path.Combine(projectDirectory, "List_R6_Roulette", "PenalityList.xml")))
+            string penalityListPath = Path.Combine(projectDirectory, "List_R6_Roulette", "PenalityList.xml");
+            if (!File.Exists(penalityListPath))
             {
-                Penality = (BdDefi)XmlSerializer.Deserialize(reader);
+                File.Create(penalityListPath).Close();
             }
-
+            if (new FileInfo(penalityListPath).Length > 0)
+            {
+                using (var reader = new StreamReader(penalityListPath))
+                {
+                    Penality = (BdDefi)XmlSerializer.Deserialize(reader);
+                }
+            }
         }
     }
 }
