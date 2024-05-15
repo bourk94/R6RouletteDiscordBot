@@ -21,12 +21,25 @@ namespace R6_Roulette_Bot
         {
             var json = string.Empty;
 
-            // Modifier le chemin d'accès au fichier de configuration
-            using (var fs = File.OpenRead(Path.Combine(projectDirectory, "List_R6_Roulette", "config.json")))
-            using (var sr = new StreamReader(fs, new UTF8Encoding(false)))
-                json = await sr.ReadToEndAsync().ConfigureAwait(false);
+            ConfigJson configJson;
+            try
+            {
+                using (var fs = File.OpenRead(Path.Combine(projectDirectory, "List_R6_Roulette", "config.json")))
+                using (var sr = new StreamReader(fs, new UTF8Encoding(false)))
+                    json = await sr.ReadToEndAsync().ConfigureAwait(false);
 
-            ConfigJson configJson = JsonConvert.DeserializeObject<ConfigJson>(json);
+                configJson = JsonConvert.DeserializeObject<ConfigJson>(json);
+            }
+            catch (FileNotFoundException ex)
+            {
+                Console.WriteLine("Le fichier de configuration est manquant : " + ex.Message);
+                return;
+            }
+            catch (JsonException ex)
+            {
+                Console.WriteLine("Erreur lors de la lecture du fichier de configuration : " + ex.Message);
+                return;
+            }
 
             var config = new DiscordConfiguration
             {

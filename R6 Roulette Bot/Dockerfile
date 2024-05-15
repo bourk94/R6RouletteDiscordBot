@@ -4,12 +4,15 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
 # Set the working directory
 WORKDIR /app
 
+# Clone the git repository
+RUN git clone https://github.com/bourk94/R6RouletteDiscordBot.git .
+
 # Copy csproj and restore dependencies
 COPY *.csproj ./
 RUN dotnet restore
 
-# Copy the 'List_R6_Roulette' directory from your local machine to the Docker image
-COPY ./bin/Debug/net6.0/List_R6_Roulette ./List_R6_Roulette
+# Create a directory for the List_R6_Roulette folder
+RUN mkdir ./List_R6_Roulette
 
 # Copy everything else and build the project
 COPY . ./
@@ -19,7 +22,6 @@ RUN dotnet publish -c Release -o out
 FROM mcr.microsoft.com/dotnet/aspnet:6.0
 WORKDIR /app
 COPY --from=build-env /app/out .
-COPY --from=build-env /app/List_R6_Roulette ./List_R6_Roulette
 
 # Make sure the app binds to port 80
 ENV ASPNETCORE_URLS=http://+:80
