@@ -40,6 +40,8 @@ namespace R6_Roulette_Bot
                 return;
             }
 
+            VoiceDetection.InitPorcupine(configJson.PicovoiceToken);
+
             var config = new DiscordConfiguration
             {
                 Token = configJson.DiscordToken,
