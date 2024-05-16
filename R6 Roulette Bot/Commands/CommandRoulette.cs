@@ -1,6 +1,8 @@
 ﻿using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.CommandsNext;
 using System.Xml.Serialization;
+using DSharpPlus.VoiceNext;
+using R6_Roulette_Bot;
 
 namespace R6_Roulette_Bot.Commands
 {
@@ -15,6 +17,12 @@ namespace R6_Roulette_Bot.Commands
         private BdDefi dbAttack = Program.Attack;
         private BdDefi dbDefence = Program.Defence;
         private BdDefi dbPenality = Program.Penality;
+        private VoiceDetection voiceDetection;
+
+        public CommandRoulette()
+        {
+            this.voiceDetection = new VoiceDetection(this);
+        }
 
         // Méthodes privées
 
@@ -247,6 +255,54 @@ namespace R6_Roulette_Bot.Commands
         public async Task AppelR6(CommandContext ctx)
         {
             await ctx.Channel.SendMessageAsync("<@&1072650837630931076> REEEEEEEEEEEEEEEEEEEEEEEEEEE").ConfigureAwait(false);
+        }
+
+        [Command("join")]
+        [Description("Le bot rejoint le salon")]
+        public async Task JoinChannel(CommandContext ctx)
+        {
+            var vnext = ctx.Client.GetVoiceNext();
+            var vnc = vnext.GetConnection(ctx.Guild);
+            if (vnc != null)
+            {
+                throw new InvalidOperationException("Already connected in this guild.");
+            }
+
+            var chn = ctx.Member?.VoiceState?.Channel;
+            if (chn == null)
+            {
+                throw new InvalidOperationException("You need to be in a voice channel.");
+            }
+
+            vnc = await vnext.ConnectAsync(chn);
+
+            await ctx.RespondAsync($"Connecté à {chn.Name}").ConfigureAwait(false);
+
+            await vnc.SendSpeakingAsync(true);
+
+            await vnc.SendSpeakingAsync(false);
+
+            voiceDetection.SetCommandContext(ctx);
+
+            vnc.VoiceReceived += voiceDetection.ReceiveHandler;
+        }
+
+        [Command("leave")]
+        [Description("Le bot quitte le salon")]
+        public async Task LeaveChannel(CommandContext ctx)
+        {
+            var vnext = ctx.Client.GetVoiceNext();
+            var vnc = vnext.GetConnection(ctx.Guild);
+            if (vnc == null)
+            {
+                throw new InvalidOperationException("Not connected in this guild.");
+            }
+
+            vnc.Disconnect();
+
+            vnc.VoiceReceived -= voiceDetection.ReceiveHandler;
+
+            await ctx.RespondAsync("Déconnecté").ConfigureAwait(false);
         }
     }
 }

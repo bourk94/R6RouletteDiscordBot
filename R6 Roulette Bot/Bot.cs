@@ -7,6 +7,7 @@ using System.IO;
 using Newtonsoft.Json;
 using Microsoft.Extensions.Logging;
 using R6_Roulette_Bot.Commands;
+using DSharpPlus.VoiceNext;
 
 // https://discord.com/api/oauth2/authorize?client_id=1028525800758190161&permissions=412317379648&scope=bot
 namespace R6_Roulette_Bot
@@ -47,10 +48,19 @@ namespace R6_Roulette_Bot
                 TokenType = TokenType.Bot,
                 AutoReconnect = true,
                 MinimumLogLevel = LogLevel.Debug,
-                LoggerFactory = default
+                LoggerFactory = default,
+                Intents = DiscordIntents.All
             };
 
             Client = new DiscordClient(config);
+
+            Client.UseVoiceNext(
+                   new VoiceNextConfiguration
+                   {
+                       EnableIncoming = true,
+                       AudioFormat = new AudioFormat(16000, 1, VoiceApplication.Voice)
+                   }
+                );
 
             Client.Ready += OnClientReady;
 
@@ -61,8 +71,9 @@ namespace R6_Roulette_Bot
                 EnableDms = false,
                 EnableDefaultHelp = true,
                 UseDefaultCommandHandler = true,
-                QuotationMarks = new char[] { '"' }    
+                QuotationMarks = new char[] { '"' }
             };
+            
 
             Commands = Client.UseCommandsNext(commandsConfig);
 
