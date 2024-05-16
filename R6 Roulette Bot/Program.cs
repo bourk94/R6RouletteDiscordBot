@@ -1,4 +1,6 @@
-﻿using Pv;
+﻿using Newtonsoft.Json;
+using Pv;
+using System.Text;
 using System.Xml.Serialization;
 
 namespace R6_Roulette_Bot
@@ -9,8 +11,6 @@ namespace R6_Roulette_Bot
         internal static BdDefi Defence;
         internal static BdDefi Penality;
 
-        internal static Porcupine porcupine;
-
         static void Main(string[] args)
         {
             Attack = new BdDefi();
@@ -18,17 +18,10 @@ namespace R6_Roulette_Bot
             Penality = new BdDefi();
 
             DeserialixeXmlFileToList();
-            InitPorcupine();
 
             Bot unBot = new Bot();
-            unBot.RunAsync().GetAwaiter().GetResult();
-        }
 
-        private static void InitPorcupine()
-        {
-            porcupine = Porcupine.FromBuiltInKeywords(
-            "n985H1zNTKSwCECcySy4jn/6jImBWEAcNUO5T2HjmiCAcYeI3Le3gw==",
-            new List<BuiltInKeyword> { BuiltInKeyword.PORCUPINE, BuiltInKeyword.JARVIS });
+            unBot.RunAsync().GetAwaiter().GetResult();
         }
 
         private static void DeserialixeXmlFileToList()

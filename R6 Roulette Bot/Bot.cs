@@ -15,12 +15,12 @@ namespace R6_Roulette_Bot
         private string projectDirectory = AppDomain.CurrentDomain.BaseDirectory;
         public DiscordClient? Client { get; private set; }
         public CommandsNextExtension? Commands { get; private set; }
+        public ConfigJson configJson { get; private set; }
 
         public async Task RunAsync()
         {
             var json = string.Empty;
 
-            ConfigJson configJson;
             try
             {
                 using (var fs = File.OpenRead(Path.Combine(projectDirectory, "List_R6_Roulette", "config.json")))
@@ -40,9 +40,11 @@ namespace R6_Roulette_Bot
                 return;
             }
 
+            VoiceDetection.InitPorcupine(configJson.PicovoiceToken);
+
             var config = new DiscordConfiguration
             {
-                Token = configJson.Token,
+                Token = configJson.DiscordToken,
                 TokenType = TokenType.Bot,
                 AutoReconnect = true,
                 MinimumLogLevel = LogLevel.Debug,

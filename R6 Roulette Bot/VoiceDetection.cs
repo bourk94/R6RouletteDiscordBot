@@ -12,10 +12,18 @@ namespace R6_Roulette_Bot
 
         public CommandContext? commandContext { get; set; }
         private CommandRoulette commandRoulette;
+        private static Porcupine? porcupine;
 
         public VoiceDetection(CommandRoulette commandRoulette)
         {
             this.commandRoulette = commandRoulette;
+        }
+
+        public static void InitPorcupine(string token)
+        {
+            porcupine = Porcupine.FromBuiltInKeywords(
+            token,
+            new List<BuiltInKeyword> { BuiltInKeyword.JARVIS });
         }
 
         public async Task ReceiveHandler(VoiceNextConnection _, VoiceReceiveEventArgs args)
@@ -47,7 +55,7 @@ namespace R6_Roulette_Bot
                 }
 
                 // Passer la trame à Porcupine
-                int keywordIndex = Program.porcupine.Process(frame);
+                int keywordIndex = porcupine.Process(frame);
                 if (keywordIndex >= 0)
                 {
                     await commandRoulette.RouletteStrat(GetCommandContext());
