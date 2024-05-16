@@ -1,8 +1,4 @@
-﻿using System;
-using System.Runtime.CompilerServices;
-using System.Xml.Serialization;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Xml.Serialization;
 
 namespace R6_Roulette_Bot
 {

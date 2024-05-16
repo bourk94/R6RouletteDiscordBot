@@ -1,7 +1,6 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.VoiceNext;
 using DSharpPlus.VoiceNext.EventArgs;
-using NAudio.Wave;
 using Pv;
 using R6_Roulette_Bot.Commands;
 
@@ -34,11 +33,6 @@ namespace R6_Roulette_Bot
             Buffer.BlockCopy(pcmData, 0, audioFrame, 0, pcmData.Length);
 
 
-            using (var waveFileWriter = new WaveFileWriter("audio.wav", new WaveFormat(16000, 16, 1)))
-            {
-                waveFileWriter.Write(pcmData, 0, pcmData.Length);
-            }
-
             // Traiter les données audio par trames
             for (int i = 0; i < audioFrame.Length; i += 512)
             {
@@ -61,7 +55,7 @@ namespace R6_Roulette_Bot
                 int keywordIndex = porcupine.Process(frame);
                 if (keywordIndex >= 0)
                 {
-                   await commandRoulette.RouletteStrat(GetCommandContext());
+                    await commandRoulette.RouletteStrat(GetCommandContext());
                 }
             }
             await Task.Yield();

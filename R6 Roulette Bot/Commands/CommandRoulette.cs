@@ -1,8 +1,7 @@
-﻿using DSharpPlus.CommandsNext.Attributes;
-using DSharpPlus.CommandsNext;
-using System.Xml.Serialization;
+﻿using DSharpPlus.CommandsNext;
+using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.VoiceNext;
-using R6_Roulette_Bot;
+using System.Xml.Serialization;
 
 namespace R6_Roulette_Bot.Commands
 {
@@ -277,10 +276,6 @@ namespace R6_Roulette_Bot.Commands
             vnc = await vnext.ConnectAsync(chn);
 
             await ctx.RespondAsync($"Connecté à {chn.Name}").ConfigureAwait(false);
-
-            await vnc.SendSpeakingAsync(true);
-
-            await vnc.SendSpeakingAsync(false);
 
             voiceDetection.SetCommandContext(ctx);
 
