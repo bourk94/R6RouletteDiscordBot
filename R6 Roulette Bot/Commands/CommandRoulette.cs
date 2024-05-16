@@ -1,4 +1,4 @@
-﻿using DSharpPlus.CommandsNext;
+using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using System.Xml.Serialization;
 
@@ -247,6 +247,54 @@ namespace R6_Roulette_Bot.Commands
         public async Task AppelR6(CommandContext ctx)
         {
             await ctx.Channel.SendMessageAsync("<@&1072650837630931076> REEEEEEEEEEEEEEEEEEEEEEEEEEE").ConfigureAwait(false);
+        }
+
+        [Command("join")]
+        [Description("Le bot rejoint le salon")]
+        public async Task JoinChannel(CommandContext ctx)
+        {
+
+            var vnext = ctx.Client.GetVoiceNext();
+            var vnc = vnext.GetConnection(ctx.Guild);
+            if (vnc != null)
+            {
+                throw new InvalidOperationException("Already connected in this guild.");
+            }
+
+            var chn = ctx.Member?.VoiceState?.Channel;
+            if (chn == null)
+            {
+                throw new InvalidOperationException("You need to be in a voice channel.");
+            }
+
+            vnc = await vnext.ConnectAsync(chn);
+
+            await ctx.Channel.SendMessageAsync("Connexion au salon vocal").ConfigureAwait(false);
+
+            voiceDetection.SetCommandContext(ctx);
+
+            vnc.VoiceReceived += voiceDetection.ReceiveHandler;
+
+        }
+
+        [Command("leave")]
+        [Description("Le bot quitte le salon")]
+        public async Task LeaveChannel(CommandContext ctx)
+        {
+
+            var vnext = ctx.Client.GetVoiceNext();
+            var vnc = vnext.GetConnection(ctx.Guild);
+            if (vnc == null)
+            {
+                throw new InvalidOperationException("Not connected in this guild.");
+            }
+
+            vnc.Disconnect();
+
+            vnc.VoiceReceived -= voiceDetection.ReceiveHandler;
+            
+            await ctx.Channel.SendMessageAsync("Déconnexion du salon vocal").ConfigureAwait(false);
+
         }
     }
 }
