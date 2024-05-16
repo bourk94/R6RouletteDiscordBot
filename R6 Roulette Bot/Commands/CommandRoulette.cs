@@ -260,6 +260,7 @@ namespace R6_Roulette_Bot.Commands
         [Description("Le bot rejoint le salon")]
         public async Task JoinChannel(CommandContext ctx)
         {
+
             var vnext = ctx.Client.GetVoiceNext();
             var vnc = vnext.GetConnection(ctx.Guild);
             if (vnc != null)
@@ -280,12 +281,14 @@ namespace R6_Roulette_Bot.Commands
             voiceDetection.SetCommandContext(ctx);
 
             vnc.VoiceReceived += voiceDetection.ReceiveHandler;
+
         }
 
         [Command("leave")]
         [Description("Le bot quitte le salon")]
         public async Task LeaveChannel(CommandContext ctx)
         {
+
             var vnext = ctx.Client.GetVoiceNext();
             var vnc = vnext.GetConnection(ctx.Guild);
             if (vnc == null)
@@ -298,6 +301,7 @@ namespace R6_Roulette_Bot.Commands
             vnc.VoiceReceived -= voiceDetection.ReceiveHandler;
             
             await ctx.Channel.SendMessageAsync("Déconnexion du salon vocal").ConfigureAwait(false);
+
         }
     }
 }
