@@ -1,8 +1,7 @@
-﻿using DSharpPlus.CommandsNext.Attributes;
-using DSharpPlus.CommandsNext;
-using System.Xml.Serialization;
+﻿using DSharpPlus.CommandsNext;
+using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.VoiceNext;
-using R6_Roulette_Bot;
+using System.Xml.Serialization;
 
 namespace R6_Roulette_Bot.Commands
 {
@@ -276,11 +275,7 @@ namespace R6_Roulette_Bot.Commands
 
             vnc = await vnext.ConnectAsync(chn);
 
-            await ctx.RespondAsync($"Connecté à {chn.Name}").ConfigureAwait(false);
-
-            await vnc.SendSpeakingAsync(true);
-
-            await vnc.SendSpeakingAsync(false);
+            await ctx.Channel.SendMessageAsync("Connexion au salon vocal").ConfigureAwait(false);
 
             voiceDetection.SetCommandContext(ctx);
 
@@ -301,8 +296,8 @@ namespace R6_Roulette_Bot.Commands
             vnc.Disconnect();
 
             vnc.VoiceReceived -= voiceDetection.ReceiveHandler;
-
-            await ctx.RespondAsync("Déconnecté").ConfigureAwait(false);
+            
+            await ctx.Channel.SendMessageAsync("Déconnexion du salon vocal").ConfigureAwait(false);
         }
     }
 }

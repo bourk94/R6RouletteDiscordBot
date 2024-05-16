@@ -1,7 +1,6 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.VoiceNext;
 using DSharpPlus.VoiceNext.EventArgs;
-using NAudio.Wave;
 using Pv;
 using R6_Roulette_Bot.Commands;
 
@@ -11,17 +10,20 @@ namespace R6_Roulette_Bot
     internal class VoiceDetection
     {
 
-        private CommandContext? commandContext { get; set; }
+        public CommandContext? commandContext { get; set; }
         private CommandRoulette commandRoulette;
-
-        Porcupine porcupine = Porcupine.FromBuiltInKeywords(
-        "n985H1zNTKSwCECcySy4jn/6jImBWEAcNUO5T2HjmiCAcYeI3Le3gw==",
-        new List<BuiltInKeyword> { BuiltInKeyword.PORCUPINE, BuiltInKeyword.JARVIS });
-
+        private static Porcupine? porcupine;
 
         public VoiceDetection(CommandRoulette commandRoulette)
         {
             this.commandRoulette = commandRoulette;
+        }
+
+        public static void InitPorcupine(string token)
+        {
+            porcupine = Porcupine.FromBuiltInKeywords(
+            token,
+            new List<BuiltInKeyword> { BuiltInKeyword.JARVIS });
         }
 
         public async Task ReceiveHandler(VoiceNextConnection _, VoiceReceiveEventArgs args)
@@ -33,11 +35,6 @@ namespace R6_Roulette_Bot
             short[] audioFrame = new short[pcmData.Length / sizeof(short)];
             Buffer.BlockCopy(pcmData, 0, audioFrame, 0, pcmData.Length);
 
-
-            using (var waveFileWriter = new WaveFileWriter("audio.wav", new WaveFormat(16000, 16, 1)))
-            {
-                waveFileWriter.Write(pcmData, 0, pcmData.Length);
-            }
 
             // Traiter les données audio par trames
             for (int i = 0; i < audioFrame.Length; i += 512)
@@ -61,7 +58,7 @@ namespace R6_Roulette_Bot
                 int keywordIndex = porcupine.Process(frame);
                 if (keywordIndex >= 0)
                 {
-                   await commandRoulette.RouletteStrat(GetCommandContext());
+                    await commandRoulette.RouletteStrat(GetCommandContext());
                 }
             }
             await Task.Yield();

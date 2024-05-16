@@ -1,16 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-using System.Runtime.Serialization.Formatters;
-using System.Xml.Serialization;
-using System.Collections.Generic;
+﻿using System.Collections;
 
 namespace R6_Roulette_Bot
 {
