@@ -1,4 +1,7 @@
-﻿using System.Xml.Serialization;
+﻿using Newtonsoft.Json;
+using Pv;
+using System.Text;
+using System.Xml.Serialization;
 
 namespace R6_Roulette_Bot
 {
@@ -7,6 +10,7 @@ namespace R6_Roulette_Bot
         internal static BdDefi Attack;
         internal static BdDefi Defence;
         internal static BdDefi Penality;
+
         static void Main(string[] args)
         {
             Attack = new BdDefi();
@@ -16,8 +20,10 @@ namespace R6_Roulette_Bot
             DeserialixeXmlFileToList();
 
             Bot unBot = new Bot();
+
             unBot.RunAsync().GetAwaiter().GetResult();
         }
+
         private static void DeserialixeXmlFileToList()
         {
             var XmlSerializer = new XmlSerializer(typeof(BdDefi));

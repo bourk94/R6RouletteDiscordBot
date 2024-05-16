@@ -10,17 +10,20 @@ namespace R6_Roulette_Bot
     internal class VoiceDetection
     {
 
-        private CommandContext? commandContext { get; set; }
+        public CommandContext? commandContext { get; set; }
         private CommandRoulette commandRoulette;
-
-        Porcupine porcupine = Porcupine.FromBuiltInKeywords(
-        "n985H1zNTKSwCECcySy4jn/6jImBWEAcNUO5T2HjmiCAcYeI3Le3gw==",
-        new List<BuiltInKeyword> { BuiltInKeyword.PORCUPINE, BuiltInKeyword.JARVIS });
-
+        private static Porcupine? porcupine;
 
         public VoiceDetection(CommandRoulette commandRoulette)
         {
             this.commandRoulette = commandRoulette;
+        }
+
+        public static void InitPorcupine(string token)
+        {
+            porcupine = Porcupine.FromBuiltInKeywords(
+            token,
+            new List<BuiltInKeyword> { BuiltInKeyword.JARVIS });
         }
 
         public async Task ReceiveHandler(VoiceNextConnection _, VoiceReceiveEventArgs args)
