@@ -1,13 +1,11 @@
-﻿using System.Text;
-using System.Threading.Tasks;
-using DSharpPlus;
+﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.EventArgs;
-using System.IO;
-using Newtonsoft.Json;
-using Microsoft.Extensions.Logging;
-using R6_Roulette_Bot.Commands;
 using DSharpPlus.VoiceNext;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using R6_Roulette_Bot.Commands;
+using System.Text;
 
 // https://discord.com/api/oauth2/authorize?client_id=1028525800758190161&permissions=412317379648&scope=bot
 namespace R6_Roulette_Bot
@@ -17,7 +15,7 @@ namespace R6_Roulette_Bot
         private string projectDirectory = AppDomain.CurrentDomain.BaseDirectory;
         public DiscordClient? Client { get; private set; }
         public CommandsNextExtension? Commands { get; private set; }
-        
+
         public async Task RunAsync()
         {
             var json = string.Empty;
@@ -73,7 +71,7 @@ namespace R6_Roulette_Bot
                 UseDefaultCommandHandler = true,
                 QuotationMarks = new char[] { '"' }
             };
-            
+
 
             Commands = Client.UseCommandsNext(commandsConfig);
 
