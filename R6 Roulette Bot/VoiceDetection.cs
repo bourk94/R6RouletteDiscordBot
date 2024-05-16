@@ -21,9 +21,21 @@ namespace R6_Roulette_Bot
 
         public static void InitPorcupine(string token)
         {
-            porcupine = Porcupine.FromBuiltInKeywords(
-            token,
-            new List<BuiltInKeyword> { BuiltInKeyword.JARVIS });
+            try
+            {
+                porcupine = Porcupine.FromBuiltInKeywords(
+                token,
+                new List<BuiltInKeyword> { BuiltInKeyword.JARVIS });
+            }
+            catch (Pv.PorcupineActivationLimitException ex)
+            {
+                Console.WriteLine("Erreur lors de l'initialisation de Porcupine : " + ex.Message);
+                Console.WriteLine("Veuillez vérifier que votre clé d'accès est correcte et que vous n'avez pas dépassé votre limite d'activation.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Une erreur inattendue s'est produite : " + ex.Message);
+            }
         }
 
         public async Task ReceiveHandler(VoiceNextConnection _, VoiceReceiveEventArgs args)
