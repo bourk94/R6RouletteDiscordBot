@@ -10,13 +10,8 @@ namespace R6_Roulette_Bot
     internal class VoiceDetection
     {
 
-        private CommandContext? commandContext { get; set; }
+        public CommandContext? commandContext { get; set; }
         private CommandRoulette commandRoulette;
-
-        Porcupine porcupine = Porcupine.FromBuiltInKeywords(
-        "n985H1zNTKSwCECcySy4jn/6jImBWEAcNUO5T2HjmiCAcYeI3Le3gw==",
-        new List<BuiltInKeyword> { BuiltInKeyword.PORCUPINE, BuiltInKeyword.JARVIS });
-
 
         public VoiceDetection(CommandRoulette commandRoulette)
         {
@@ -52,7 +47,7 @@ namespace R6_Roulette_Bot
                 }
 
                 // Passer la trame à Porcupine
-                int keywordIndex = porcupine.Process(frame);
+                int keywordIndex = Program.porcupine.Process(frame);
                 if (keywordIndex >= 0)
                 {
                     await commandRoulette.RouletteStrat(GetCommandContext());
