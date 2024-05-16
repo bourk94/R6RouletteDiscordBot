@@ -278,10 +278,6 @@ namespace R6_Roulette_Bot.Commands
 
             await ctx.RespondAsync($"Connecté à {chn.Name}").ConfigureAwait(false);
 
-            await vnc.SendSpeakingAsync(true);
-
-            await vnc.SendSpeakingAsync(false);
-
             voiceDetection.SetCommandContext(ctx);
 
             vnc.VoiceReceived += voiceDetection.ReceiveHandler;
