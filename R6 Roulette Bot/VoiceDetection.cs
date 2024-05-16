@@ -47,7 +47,6 @@ namespace R6_Roulette_Bot
             short[] audioFrame = new short[pcmData.Length / sizeof(short)];
             Buffer.BlockCopy(pcmData, 0, audioFrame, 0, pcmData.Length);
 
-
             // Traiter les données audio par trames
             for (int i = 0; i < audioFrame.Length; i += 512)
             {
