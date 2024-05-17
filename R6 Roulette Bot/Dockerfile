@@ -20,6 +20,12 @@ RUN dotnet publish -c Release -o out
 
 # Build runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:6.0
+
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    libopus-dev \
+    libsodium-dev
+
 WORKDIR /app
 COPY --from=build-env /app/out .
 
