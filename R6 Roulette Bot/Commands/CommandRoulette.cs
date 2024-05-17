@@ -279,7 +279,7 @@ namespace R6_Roulette_Bot.Commands
 
             await ctx.Channel.SendMessageAsync("Connexion au salon vocal").ConfigureAwait(false);
 
-            voiceDetection.SetCommandContext(ctx);
+            voiceDetection.commandContext = ctx;
 
             vnc.VoiceReceived += voiceDetection.ReceiveHandler;
 
