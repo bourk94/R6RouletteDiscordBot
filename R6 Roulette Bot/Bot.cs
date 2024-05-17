@@ -58,7 +58,7 @@ namespace R6_Roulette_Bot
                    new VoiceNextConfiguration
                    {
                        EnableIncoming = true,
-                       AudioFormat = new AudioFormat(16000, 1, VoiceApplication.Voice)
+                       AudioFormat = new AudioFormat(16000, 1, VoiceApplication.Voice),
                    }
                 );
 
