@@ -1,6 +1,7 @@
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using System.Xml.Serialization;
+using DSharpPlus.VoiceNext;
 
 namespace R6_Roulette_Bot.Commands
 {
