@@ -1,13 +1,8 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.VoiceNext;
-using DSharpPlus.VoiceNext.Codec;
 using DSharpPlus.VoiceNext.EventArgs;
-using Microsoft.VisualBasic;
 using Pv;
 using R6_Roulette_Bot.Commands;
-using Concentus.Structs;
-using NAudio.Wave;
-using Concentus;
 
 
 namespace R6_Roulette_Bot
