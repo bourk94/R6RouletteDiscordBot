@@ -1,7 +1,7 @@
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
-using System.Xml.Serialization;
 using DSharpPlus.VoiceNext;
+using System.Xml.Serialization;
 
 namespace R6_Roulette_Bot.Commands
 {
@@ -300,7 +300,7 @@ namespace R6_Roulette_Bot.Commands
             vnc.Disconnect();
 
             vnc.VoiceReceived -= voiceDetection.ReceiveHandler;
-            
+
             await ctx.Channel.SendMessageAsync("Déconnexion du salon vocal").ConfigureAwait(false);
 
         }
