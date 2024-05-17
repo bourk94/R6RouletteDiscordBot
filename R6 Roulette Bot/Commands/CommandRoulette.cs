@@ -1,6 +1,7 @@
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using System.Xml.Serialization;
+using DSharpPlus.VoiceNext;
 
 namespace R6_Roulette_Bot.Commands
 {
@@ -15,6 +16,13 @@ namespace R6_Roulette_Bot.Commands
         private BdDefi dbAttack = Program.Attack;
         private BdDefi dbDefence = Program.Defence;
         private BdDefi dbPenality = Program.Penality;
+        private VoiceDetection voiceDetection;
+
+        public CommandRoulette()
+        {
+            this.voiceDetection = new VoiceDetection(this);
+        }
+
 
         // Méthodes privées
 

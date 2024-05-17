@@ -66,10 +66,17 @@ namespace R6_Roulette_Bot
                 }
 
                 // Passer la trame à Porcupine
-                int keywordIndex = porcupine.Process(frame);
-                if (keywordIndex >= 0)
+                if (porcupine != null)
                 {
-                    await commandRoulette.RouletteStrat(GetCommandContext());
+                    int keywordIndex = porcupine.Process(frame);
+                    if (keywordIndex >= 0)
+                    {
+                        await commandRoulette.RouletteStrat(GetCommandContext());
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Porcupine n'est pas initialisé");
                 }
             }
             await Task.Yield();
