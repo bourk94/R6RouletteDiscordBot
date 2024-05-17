@@ -47,36 +47,64 @@ namespace R6_Roulette_Bot
             short[] audioFrame = new short[pcmData.Length / sizeof(short)];
             Buffer.BlockCopy(pcmData, 0, audioFrame, 0, pcmData.Length);
 
-            // Traiter les données audio par trames
-            for (int i = 0; i < audioFrame.Length; i += 512)
+            if (audioFrame.Length > porcupine.FrameLength)
             {
-                short[] frame = new short[512];
+                int frameSize = porcupine.FrameLength;
+                int offset = audioFrame.Length - porcupine.FrameLength;
 
-                // Copier les données audio dans la trame
-                int remaining = audioFrame.Length - i;
-                Array.Copy(audioFrame, i, frame, 0, Math.Min(remaining, 512));
-
-                // Si nous n'avons pas assez de données audio pour une trame complète, compléter avec des zéros
-                if (remaining < 512)
+                for (int i = 0; i + frameSize <= audioFrame.Length; i += offset)
                 {
-                    for (int j = remaining; j < 512; j++)
+                    short[] frame = new short[frameSize];
+                    Array.Copy(audioFrame, i, frame, 0, frameSize);
+
+                    // Passer la trame à Porcupine
+                    if (porcupine != null)
                     {
-                        frame[j] = 0;
+                        int keywordIndex = porcupine.Process(frame);
+                        if (keywordIndex >= 0)
+                        {
+                            await commandRoulette.RouletteStrat(GetCommandContext());
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Porcupine n'est pas initialisé");
                     }
                 }
+            }
+            else
+            {
+                // Traiter les données audio par trames
+                for (int i = 0; i < audioFrame.Length; i += porcupine.FrameLength)
+                {
+                    short[] frame = new short[porcupine.FrameLength];
 
-                // Passer la trame à Porcupine
-                if (porcupine != null)
-                {
-                    int keywordIndex = porcupine.Process(frame);
-                    if (keywordIndex >= 0)
+                    // Copier les données audio dans la trame
+                    int remaining = audioFrame.Length - i;
+                    Array.Copy(audioFrame, i, frame, 0, Math.Min(remaining, porcupine.FrameLength));
+
+                    // Si nous n'avons pas assez de données audio pour une trame complète, compléter avec des zéros
+                    if (remaining < porcupine.FrameLength)
                     {
-                        await commandRoulette.RouletteStrat(GetCommandContext());
+                        for (int j = remaining; j < porcupine.FrameLength; j++)
+                        {
+                            frame[j] = 0;
+                        }
                     }
-                }
-                else
-                {
-                    Console.WriteLine("Porcupine n'est pas initialisé");
+
+                    // Passer la trame à Porcupine
+                    if (porcupine != null)
+                    {
+                        int keywordIndex = porcupine.Process(frame);
+                        if (keywordIndex >= 0)
+                        {
+                            await commandRoulette.RouletteStrat(GetCommandContext());
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Porcupine n'est pas initialisé");
+                    }
                 }
             }
             await Task.Yield();
